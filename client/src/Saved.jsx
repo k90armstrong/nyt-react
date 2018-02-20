@@ -13,31 +13,16 @@ class Saved extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);  
   }
 
-  isNumber(char) {
-    if (!isNaN(parseInt(char, 10))) {
-      return true;
-    }
-    return false;
+  handleUpdate(article) {
+
   }
 
-  handleChange(event) {
-    if (event.target.name !== 'search' && (this.isNumber(event.target.value) || event.target.value === '')) {
-      this.setState({ [event.target.name]: event.target.value });
-    } else if (event.target.name === 'search') {
-      this.setState({ [event.target.name]: event.target.value });      
-    }
+  handleRemove(article) {
+
   }
 
-  handleSearch() {
-    // date must be YYYYMMDD
-    var body = {
-      search: this.state.search,
-      startYear: this.state.startYear + '0101',
-      endYear: this.state.endYear + '1231'      
-    };
-    axios.post('/api/nytsearch', body)
-    .then((results) => this.setState({ articlesReturned: results.data }))
-    .catch(console.log('oops'));
+  componentWillMount() {
+    axios.get('/api/articles', )
   }
 
   render() {
