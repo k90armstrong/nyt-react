@@ -1,12 +1,15 @@
 import React from 'react';
 import axios from 'axios';
 
+import SearchResults from './SearchResults';
+import SavedArticle from './SavedArticle';
+
 class Saved extends React.Component {
   constructor() {
     super();
 
     this.state = {
-
+      articles: []
     };
 
     this.handleRemove = this.handleRemove.bind(this);
@@ -18,11 +21,23 @@ class Saved extends React.Component {
   }
 
   handleRemove(article) {
-
+    this.setState({
+      articles: [
+        ...this.state.articles.filter(artic => article._id !== artic._id)
+      ]
+    });
   }
 
   componentWillMount() {
-    axios.get('/api/articles', )
+    axios.get('/api/articles')
+    .then(response => {
+      this.setState({
+        articles: response.data
+      });
+    })
+    .catch(response => {
+      console.log(response);
+    });
   }
 
   render() {
@@ -32,52 +47,21 @@ class Saved extends React.Component {
           <div className='container'>
             <nav className="panel">
               <p className="panel-heading">
-                Search For Articles
+                Saved Articles
               </p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'right' }} className="panel-block">
-                <label className="label">Search Term</label>
-                <input 
-                  className="input" 
-                  type="text" 
-                  placeholder="NASA" 
-                  onChange={this.handleChange}
-                  name={'search'}
-                  value={this.state.search}
-                />
-                <label className="label">Start Year</label>
-                <input 
-                  className="input" 
-                  type="text" 
-                  placeholder="2001" 
-                  onChange={this.handleChange} 
-                  name={'startYear'}                
-                  value={this.state.startYear}
-                />
-                <label className="label">End Year</label>              
-                <input 
-                  className="input" 
-                  type="text" 
-                  placeholder="2002" 
-                  onChange={this.handleChange}
-                  name={'endYear'}                
-                  value={this.state.endYear}
-                />              
-                <div className="field" style={{ marginTop: 10 }}>
-                  <p className="control">
-                    <button className="button is-success" onClick={this.handleSearch}>
-                      SEARCH
-                    </button>
-                  </p>
-                </div>
+                {this.state.articles.map(article => {
+                  return(
+                    <SavedArticle
+                      article={article}
+                      handleRemove={this.handleRemove}
+                    />
+                  );
+                })}
               </div>
             </nav>
           </div>
         </section>
-        {this.state.articlesReturned && 
-          <SearchResults
-            articles={this.state.articlesReturned}
-          />
-        }
       </div>
     );
   }
