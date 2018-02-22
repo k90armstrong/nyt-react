@@ -17,12 +17,28 @@ module.exports = function(app) {
     Article.create({ 
       title: req.body.title, 
       date: req.body.date,
-      url: req.body.url
+      url: req.body.url,
+      notes: ''
     }, function (err, article) {
       if (!err) {
         // saved!
         res.json(article);
       }
+    });
+  });
+
+  app.post('/api/articles/:id/update', function(req, res) {
+    console.log('update', req.params.id, req.body.params.notes);
+    Article.update({
+      _id: req.params.id
+    },
+      {
+        $set: {
+          notes: req.body.params.notes
+        }
+    },
+    function(article) {
+      res.json(article);
     });
   });
 
