@@ -16,7 +16,7 @@ module.exports = function(app) {
   app.post('/api/articles', function(req, res) {
     Article.create({ 
       title: req.body.title, 
-      date: req.body.date,
+      date: Date.now(),
       url: req.body.url,
       notes: ''
     }, function (err, article) {
